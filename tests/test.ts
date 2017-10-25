@@ -19,7 +19,7 @@ interface MessageType {
   `
 })
 export class NoticeComponent {
-  
+
   /**
    * Text for the warning
    */
