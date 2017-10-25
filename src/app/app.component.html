@@ -1,0 +1,11 @@
+<div fxLayout="row" fxFlexFill>
+  <nav fxFlex="20%" class="primary-nav">
+    <h1>Component Workshop</h1>
+    <ul>
+      <li *ngFor="let meta of metadata">{{meta.component}}</li>
+    </ul>
+  </nav>
+  <content fxFlex fxFlexFill>
+    Here
+  </content>
+</div>
