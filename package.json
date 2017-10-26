@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "parse": "node scripts/cli.js -d -c tests/**/*.ts"
+    "parse": "node scripts/cli.js -d -c tests/**/*.ts",
+    "listen": "node scripts/server.js"
   },
   "repository": {
     "type": "git",
