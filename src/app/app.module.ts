@@ -6,17 +6,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
+import { DynamicComponent } from './dynamic.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DynamicComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FlexLayoutModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

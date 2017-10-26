@@ -15,6 +15,7 @@ interface MessageType {
   selector: 'app-notice',
   template: `
     <h1>Hi {{warning}}.</h1>
+    <ng-content></ng-content>
     <button (click)="changed.emit({ type: 'click' })">Click</button>
   `
 })

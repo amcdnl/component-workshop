@@ -1,11 +1,12 @@
 import { NgModule, Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-const scenarios = [];
+export const scenarios = [];
+let metadata = [];
 
 export interface ScenariosOptions {
   imports?: any[];
   providers?: any[];
+  declarations?: any[];
 }
 
 export interface ScenariosResults {
@@ -47,6 +48,13 @@ export interface ContextOptions {
 }
 
 /**
+ * Register the metadata globally
+ */
+export function registerMetadata(metas) {
+  metadata = metas;
+}
+
+/**
  * Top level scenarios container.
  *
  * Example:
@@ -54,7 +62,12 @@ export interface ContextOptions {
  *
  */
 export function scenario(name: string, options: ScenariosOptions): ScenariosResults {
-  const declarations = [CommonModule];
+  const declarations = [];
+
+  if (options.declarations) {
+    declarations.push(...options.declarations);
+  }
+
   const module = NgModule({
     imports: options.imports,
     providers: options.providers,
@@ -122,16 +135,22 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
   }
   /* tslint:enable */
 
+  const inputs = options.inputs ?
+    Object.keys(options.inputs).map(k => {
+      return { ...options.inputs[k], name: k };
+    }) : [];
+
+  const outputs = options.outputs ?
+    Object.keys(options.outputs).map(k => {
+      return { ...options.outputs[k], name: k };
+    }) : [];
+
   return {
     name,
     component,
       // TODO: Mesh metadata inputs & context here too
-    inputs: Object.keys(options.inputs).map(k => {
-      return { ...options.inputs[k], name: k };
-    }),
+    inputs,
     // TODO: Mesh metadata outputs here too
-    outputs: Object.keys(options.outputs).map(k => {
-      return { ...options.outputs[k], name: k };
-    }),
+    outputs,
   };
 }

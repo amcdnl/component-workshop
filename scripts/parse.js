@@ -1,9 +1,6 @@
 const ts = require('typescript');
 const path = require('path');
 const fs = require('fs');
-const glob = require('glob');
-
-const metas = [];
 
 const types = {
   136: 'string'
@@ -60,6 +57,8 @@ function getOutputType(node) {
 }
 
 function parseFiles(matchedFiles) {
+  const metas = [];
+
   for (const sourcePath of matchedFiles) {
     const sourceContent = fs.readFileSync(sourcePath, 'utf-8');
   
@@ -99,10 +98,8 @@ function parseFiles(matchedFiles) {
 
     visit(sourceFile);
   }
+
+  return metas;
 }
 
-parseFiles(glob.sync('./tests/*.ts'));
-
-fs.writeFileSync('./src/assets/meta.ts', `export const metadata = ${JSON.stringify(metas, null, 2)}`)
-
-console.log(JSON.stringify(metas, null, 2));
+module.exports = parseFiles;
