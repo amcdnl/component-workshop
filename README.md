@@ -1,6 +1,8 @@
 # component-workshop
 Component workshop is a interactive component library.
 
+See the [spec here](https://docs.google.com/document/d/1RHDUny30x5V8-1-XrmFjnddxg-yKZsDcRJqtQTCxvLw/edit#).
+
 ### DSL
 ```javascript
 /**
