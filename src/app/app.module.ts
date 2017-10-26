@@ -7,11 +7,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppComponent } from './app.component';
 import { DynamicComponent } from './dynamic.component';
+import { InputsComponent } from './inputs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DynamicComponent
+    DynamicComponent,
+    InputsComponent
   ],
   imports: [
     BrowserModule,

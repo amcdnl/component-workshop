@@ -82,7 +82,7 @@ function parseFiles(matchedFiles) {
         if (getDecorator(node, 'Input')) {
           parent.inputs[node.name.text] = {
             doc: getDocs(node),
-            default: node.initializer ? node.initializer.text : undefined,
+            value: node.initializer ? node.initializer.text : undefined,
             type: getInputType(node)
           };
         } else if (getDecorator(node, 'Output')) {

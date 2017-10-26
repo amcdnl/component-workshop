@@ -1,5 +1,7 @@
 import 'reflect-metadata';
+
 import { registerMetadata, scenarios } from '../../lib';
+
 declare var require: any;
 
 registerMetadata([
@@ -15,7 +17,7 @@ registerMetadata([
     "inputs": {
       "warning": {
         "doc": "Text for the warning",
-        "default": "Foo",
+        "value": "Foo",
         "type": "string"
       },
       "status": {},

@@ -18,8 +18,15 @@ import { scenarios } from '../assets/scenarios';
           </li>
         </ul>
       </nav>
-      <content fxFlex fxFlexFill fxLayoutAlign="center center">
-        <app-dynamic group="Notice" scenario="basic notice"></app-dynamic>
+      <content fxFlex fxFlexFill>
+        <div fxLayout="row" fxFlexFill>
+          <div fxFlex fxFlexFill fxLayoutAlign="center center">
+            <app-dynamic [groupName]="group" [scenarioName]="scenario"></app-dynamic>
+          </div>
+          <div fxFlex="25%" class="input-row">
+            <app-inputs [groupName]="group" [scenarioName]="scenario"></app-inputs>
+          </div>
+        </div>
       </content>
     </div>
   `,
@@ -27,4 +34,6 @@ import { scenarios } from '../assets/scenarios';
 })
 export class AppComponent {
   scenarios = scenarios;
+  group = 'Notice';
+  scenario = 'basic notice';
 }

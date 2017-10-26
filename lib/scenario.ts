@@ -21,6 +21,7 @@ export interface ScenarioResults {
   name: string;
   inputs: any[];
   outputs: any[];
+  context: any;
 }
 
 export interface ScenarioOptions {
@@ -37,7 +38,7 @@ export interface OutputOptions {
 
 export interface InputOptions {
   description?: string;
-  default?: any;
+  value?: any;
   control?: string;
 }
 
@@ -123,7 +124,7 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
     }
 
     // project the local context onto the component
-    Object.assign(component, context);
+    // Object.assign(component, context);
   }
 
   // transpose inputs to component
@@ -133,7 +134,6 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
       (<any>component).child[k] = v.default;
     }
   }
-  /* tslint:enable */
 
   const inputs = options.inputs ?
     Object.keys(options.inputs).map(k => {
@@ -145,12 +145,22 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
       return { ...options.outputs[k], name: k };
     }) : [];
 
+  const meta = metadata.find(m => m.component === options.component.name);
+  if (meta && meta.inputs) {
+    for (const m in meta.inputs) {
+      inputs.push({
+        name: m,
+        ...meta.inputs[m]
+      });
+    }
+  }
+  /* tslint:enable */
+
   return {
     name,
     component,
-      // TODO: Mesh metadata inputs & context here too
     inputs,
-    // TODO: Mesh metadata outputs here too
     outputs,
+    context
   };
 }

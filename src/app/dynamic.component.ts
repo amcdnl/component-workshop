@@ -9,8 +9,8 @@ import { scenarios } from '../assets/scenarios';
 })
 export class DynamicComponent implements OnInit {
 
-  @Input() group;
-  @Input() scenario;
+  @Input() groupName;
+  @Input() scenarioName;
 
   constructor(
     private vcRef: ViewContainerRef,
@@ -18,8 +18,8 @@ export class DynamicComponent implements OnInit {
 
   ngOnInit() {
     const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-    const group = scenarios.find(s => s.name === this.group);
-    const scenario = group.scenarios.find(s => s.name === this.scenario);
+    const group = scenarios.find(s => s.name === this.groupName);
+    const scenario = group.scenarios.find(s => s.name === this.scenarioName);
     this.compiler.compileModuleAndAllComponentsAsync<any>(group.module).then((factory) => {
       const component = factory.componentFactories.find(c => c.componentType === scenario.component);
       const inst = this.vcRef.createComponent(component, 0, injector);
