@@ -55,6 +55,26 @@ export function registerMetadata(metas) {
   metadata = metas;
 }
 
+export function transposeContext(options) {
+  const context = {};
+  /* tslint:disable */
+  if (options.context) {
+    for (const k in options.context) {
+      const v = options.context[k];
+      const isProp = v.hasOwnProperty('type') &&
+                     v.hasOwnProperty('value');
+
+      if (isProp) {
+        context[k] = v.value;
+      } else {
+        context[k] = options.context[k];
+      }
+    }
+  }
+  /* tslint:enable */
+  return context;
+}
+
 /**
  * Top level scenarios container.
  *
@@ -106,27 +126,7 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
     template: options.template
   })(T);
 
-  const context = {};
-
   /* tslint:disable */
-  // transpose context to context
-  if (options.context) {
-    for (const k in options.context) {
-      const v = options.context[k];
-      const isProp = v.hasOwnProperty('type') &&
-                     v.hasOwnProperty('value');
-
-      if (isProp) {
-        context[k] = v.value;
-      } else {
-        context[k] = options.context[k];
-      }
-    }
-
-    // project the local context onto the component
-    // Object.assign(component, context);
-  }
-
   // transpose inputs to component
   if (options.inputs) {
     for (const k in options.inputs) {
@@ -161,6 +161,6 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
     component,
     inputs,
     outputs,
-    context
+    context: options.context
   };
 }

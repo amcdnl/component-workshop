@@ -30,7 +30,8 @@ import { scenarios } from '../assets/scenarios';
       </content>
     </div>
   `,
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  preserveWhitespaces: false
 })
 export class AppComponent {
   scenarios = scenarios;

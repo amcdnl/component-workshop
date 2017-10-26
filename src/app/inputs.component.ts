@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { scenarios } from '../assets/scenarios';
+import { Store } from '@ngrx/store';
+import { UpdateComponent } from './app.actions';
 
 @Component({
   selector: 'app-inputs',
   template: `
+    <h3>Inputs</h3>
     <ul>
       <li *ngFor="let input of scenario.inputs">
         {{input.name}}
@@ -20,6 +23,8 @@ export class InputsComponent implements OnInit {
   scenario;
   group;
 
+  constructor(private store: Store<any>) {}
+
   ngOnInit() {
     this.group = scenarios.find(s => s.name === this.groupName);
     this.scenario = this.group.scenarios.find(s => s.name === this.scenarioName);
@@ -27,6 +32,9 @@ export class InputsComponent implements OnInit {
 
   onChange(event) {
     console.log('Changing', event);
+    this.store.dispatch(new UpdateComponent({
+      text: event.target.value
+    }));
   }
 
 }
