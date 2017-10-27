@@ -1,5 +1,4 @@
 import { Component, Input, ViewContainerRef, Compiler, OnInit, ReflectiveInjector } from '@angular/core';
-import { scenarios } from '../assets/scenarios';
 import { transposeContext } from '../../lib';
 import { Store } from '@ngrx/store';
 
@@ -11,31 +10,32 @@ import { Store } from '@ngrx/store';
 })
 export class DynamicComponent implements OnInit {
 
-  @Input() groupName;
-  @Input() scenarioName;
+  @Input() scenario;
+  @Input() group;
 
   private instance;
 
   constructor(
     private store: Store<any>,
     private vcRef: ViewContainerRef,
-    private compiler: Compiler) {
+    private compiler: Compiler) {}
 
-    this.store.select('app').subscribe(state => {
+  ngOnInit() {
+    this.loadScenario();
+    this.store.select('scenarios').subscribe(state => {
       if (this.instance) {
-        Object.assign(this.instance.instance, state.inputs);
+        Object.assign(this.instance.instance, state.context);
+        Object.assign(this.instance.instance.child, state.inputs);
       }
     });
   }
 
-  ngOnInit() {
+  loadScenario() {
     const injector = ReflectiveInjector.fromResolvedProviders([], this.vcRef.parentInjector);
-    const group = scenarios.find(s => s.name === this.groupName);
-    const scenario = group.scenarios.find(s => s.name === this.scenarioName);
-    this.compiler.compileModuleAndAllComponentsAsync<any>(group.module).then((factory) => {
-      const component = factory.componentFactories.find(c => c.componentType === scenario.component);
+    this.compiler.compileModuleAndAllComponentsAsync<any>(this.group.module).then((factory) => {
+      const component = factory.componentFactories.find(c => c.componentType === this.scenario.component);
       this.instance = this.vcRef.createComponent(component, 0, injector);
-      Object.assign(this.instance.instance, transposeContext(scenario));
+      Object.assign(this.instance.instance, transposeContext(this.scenario.context));
     });
   }
 

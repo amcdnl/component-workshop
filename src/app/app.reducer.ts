@@ -1,17 +1,20 @@
 import { ActionReducer, ActionReducerMap } from '@ngrx/store';
-import { AppActions, AppActionTypes } from './app.actions';
+import { ScenarioActions, ScenarioActionTypes } from './scenario.actions';
 
-const initalState = { inputs: [] };
-export function appReducer(state = initalState, action: AppActions) {
+const initalState = { inputs: {}, context: {} };
+
+export function scenariosReducer(state = initalState, action: ScenarioActions) {
   switch (action.type) {
-    case AppActionTypes.LOAD_COMPONENT:
+    case ScenarioActionTypes.LOAD_COMPONENT:
       return state;
-    case AppActionTypes.UPDATE_COMPONENT:
-      state.inputs = { ...action.payload };
+    case ScenarioActionTypes.UPDATE_COMPONENT:
+      const inputs = {...state.inputs};
+      Object.assign(inputs, action.payload);
+      state.inputs = inputs;
       return state;
   }
 }
 
 export const reducers: ActionReducerMap<any> = {
-  app: appReducer
+  scenarios: scenariosReducer
 };

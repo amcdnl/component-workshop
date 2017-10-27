@@ -4,6 +4,7 @@ Component workshop is a interactive component library.
 See the [spec here](https://docs.google.com/document/d/1RHDUny30x5V8-1-XrmFjnddxg-yKZsDcRJqtQTCxvLw/edit#).
 
 ### DSL
+#### Concept 1
 ```javascript
 /**
  * Define a group of scenarios with their metadata information
@@ -81,3 +82,29 @@ scenario('Button Variations', {
     `
   })
   ```
+
+#### Concept 2
+```javascript
+@Scenario({
+  group: 'button',
+  name: 'basic button',
+  imports: [ButtonModule]
+  component: ButtonComponent,
+  template: `
+    <button mat-button 
+            [color]="primary" 
+            (click)="onClick()">
+      {{text}}
+    </button>
+  `
+}) 
+class BasicButton {
+  text = {
+    type: 'string',
+    control: 'textbox',
+    value: 'Hello'
+  };
+  primary = 'blue';
+  onClick() { console.log('here') }
+}
+```

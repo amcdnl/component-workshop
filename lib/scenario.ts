@@ -12,6 +12,7 @@ export interface ScenariosOptions {
 export interface ScenariosResults {
   name: string;
   module: any;
+  route: string;
   scenarios: ScenarioResults[];
   add: (name: string, options: ScenarioOptions) => ScenariosResults;
 }
@@ -22,6 +23,7 @@ export interface ScenarioResults {
   inputs: any[];
   outputs: any[];
   context: any;
+  route: string;
 }
 
 export interface ScenarioOptions {
@@ -55,24 +57,27 @@ export function registerMetadata(metas) {
   metadata = metas;
 }
 
-export function transposeContext(options) {
-  const context = {};
+/**
+ * Maps and tranposes values to the context object
+ */
+export function transposeContext(context) {
+  const newContext = {};
   /* tslint:disable */
-  if (options.context) {
-    for (const k in options.context) {
-      const v = options.context[k];
+  if (context) {
+    for (const k in context) {
+      const v = context[k];
       const isProp = v.hasOwnProperty('type') &&
                      v.hasOwnProperty('value');
 
       if (isProp) {
-        context[k] = v.value;
+        newContext[k] = v.value;
       } else {
-        context[k] = options.context[k];
+        newContext[k] = context[k];
       }
     }
   }
   /* tslint:enable */
-  return context;
+  return newContext;
 }
 
 /**
@@ -97,6 +102,7 @@ export function scenario(name: string, options: ScenariosOptions): ScenariosResu
 
   const inst = {
     name,
+    route: name.toLowerCase().split(' ').join('-'),
     module,
     scenarios: [],
     add: (n: string, o: ScenarioOptions) => {
@@ -131,7 +137,7 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
   if (options.inputs) {
     for (const k in options.inputs) {
       const v = options.inputs[k];
-      (<any>component).child[k] = v.default;
+      (<any>component).child[k] = v.value;
     }
   }
 
@@ -158,6 +164,7 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
 
   return {
     name,
+    route: name.toLowerCase().split(' ').join('-'),
     component,
     inputs,
     outputs,

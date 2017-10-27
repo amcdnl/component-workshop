@@ -1,36 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { scenarios } from '../assets/scenarios';
 
 @Component({
   selector: 'app-root',
   template: `
-    <div fxLayout="row" fxFlexFill>
-      <nav fxFlex="20%" class="primary-nav">
-        <h1>Component Workshop</h1>
+    <mat-sidenav-container class="sidenav-container">
+      <mat-sidenav #sidenav class="sidenav-nav">
         <ul>
           <li *ngFor="let group of scenarios">
             <h3>{{group.name}}</h3>
             <ul>
               <li *ngFor="let scenario of group.scenarios">
-                {{scenario.name}}
+                <a routerLink="/{{group.route}}/{{scenario.route}}">{{scenario.name}}</a>
               </li>
             </ul>
           </li>
         </ul>
-      </nav>
-      <content fxFlex fxFlexFill>
-        <div fxLayout="row" fxFlexFill>
-          <div fxFlex fxFlexFill fxLayoutAlign="center center">
-            <app-dynamic [groupName]="group" [scenarioName]="scenario"></app-dynamic>
-          </div>
-          <div fxFlex="25%" class="input-row">
-            <app-inputs [groupName]="group" [scenarioName]="scenario"></app-inputs>
-          </div>
-        </div>
-      </content>
-    </div>
+      </mat-sidenav>
+      <div fxLayout="column" fxFlexFill>
+        <nav fxFlex="64px">
+          <mat-toolbar color="primary" class="primary-toolbar" fxLayout="row">
+            <button type="button" class="menu-btn" mat-icon-button (click)="sidenav.open()">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <div fxFlex fxFlexFill fxFlexOffset="20px">
+              <h1>Component Workshop</h1>
+            </div>
+          </mat-toolbar>
+        </nav>
+        <content fxFlex fxFlexFill>
+          <router-outlet></router-outlet>
+        </content>
+      </div>
+    </mat-sidenav-container>
   `,
   styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
 export class AppComponent {

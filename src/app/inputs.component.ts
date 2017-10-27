@@ -1,40 +1,34 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { scenarios } from '../assets/scenarios';
 import { Store } from '@ngrx/store';
-import { UpdateComponent } from './app.actions';
+import { UpdateComponent } from './scenario.actions';
 
 @Component({
   selector: 'app-inputs',
   template: `
-    <h3>Inputs</h3>
-    <ul>
-      <li *ngFor="let input of scenario.inputs">
-        {{input.name}}
-        <input [value]="input.value" (change)="onChange($event)" />
-      </li>
-    </ul>
+    <div>
+      <h3>Inputs</h3>
+      <mat-form-field *ngFor="let input of scenario.inputs">
+        <input matInput
+               [placeholder]="input.name"
+               [value]="input.value"
+               (change)="onChange(input.name, $event.target.value)">
+        <mat-hint>{{input.doc}}</mat-hint>
+      </mat-form-field>
+    </div>
   `,
 })
-export class InputsComponent implements OnInit {
+export class InputsComponent {
 
-  @Input() groupName;
-  @Input() scenarioName;
-
-  scenario;
-  group;
+  @Input() group;
+  @Input() scenario;
 
   constructor(private store: Store<any>) {}
 
-  ngOnInit() {
-    this.group = scenarios.find(s => s.name === this.groupName);
-    this.scenario = this.group.scenarios.find(s => s.name === this.scenarioName);
-  }
-
-  onChange(event) {
-    console.log('Changing', event);
-    this.store.dispatch(new UpdateComponent({
-      text: event.target.value
-    }));
+  onChange(name, value) {
+    console.log('Component Input Changed', event);
+    const update = {};
+    update[name] = value;
+    this.store.dispatch(new UpdateComponent(update));
   }
 
 }

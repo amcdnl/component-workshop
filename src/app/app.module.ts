@@ -5,23 +5,37 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { StoreModule } from '@ngrx/store';
+import {
+  MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatInputModule
+} from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { DynamicComponent } from './dynamic.component';
 import { InputsComponent } from './inputs.component';
+import { DemoComponent } from './demo.component';
 import { reducers } from './app.reducer';
+import { routes } from './app.routes';
 
 @NgModule({
   declarations: [
     AppComponent,
     DynamicComponent,
-    InputsComponent
+    InputsComponent,
+    DemoComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    StoreModule.forRoot(reducers),
+    RouterModule.forRoot(routes, {
+      useHash: false
+    }),
     FlexLayoutModule,
-    StoreModule.forRoot(reducers)
+    MatToolbarModule,
+    MatButtonModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatInputModule
   ],
   bootstrap: [AppComponent]
 })
