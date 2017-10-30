@@ -28,7 +28,7 @@ import { scenarios } from '../assets/scenarios';
             </div>
           </mat-toolbar>
         </nav>
-        <content fxFlex fxFlexFill>
+        <content fxFlex>
           <router-outlet></router-outlet>
         </content>
       </div>

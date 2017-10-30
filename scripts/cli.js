@@ -5,14 +5,22 @@ const pkg = require('../package.json');
 const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
+const shell = require("shelljs");
 
 program
   .version(pkg.version)
   .option('-c, --components [src]', 'Path to components')
   .option('-s, --scenarios [src]', 'Path to scenarios')
   .option('-o, --out [path]', 'Output path')
-  .option('-d, --debug', 'Debug')
-  .parse(process.argv);
+  .option('-d, --debug', 'Debug');
+
+program
+  .command('start', 'Starts the workshop')
+  .action(function(env, options) {
+    shell.exec('npm run start');
+  });
+  
+program.parse(process.argv);
 
 console.log('🚀  Building scenarios...');
 

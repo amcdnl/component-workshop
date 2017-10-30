@@ -1,6 +1,6 @@
 import { Component, Input, ViewContainerRef, Compiler, OnInit, ReflectiveInjector } from '@angular/core';
-import { transposeContext } from '../../lib';
 import { Store } from '@ngrx/store';
+import { OutputEmitted } from './scenario.actions';
 
 @Component({
   selector: 'app-dynamic',
@@ -35,7 +35,20 @@ export class DynamicComponent implements OnInit {
     this.compiler.compileModuleAndAllComponentsAsync<any>(this.group.module).then((factory) => {
       const component = factory.componentFactories.find(c => c.componentType === this.scenario.component);
       this.instance = this.vcRef.createComponent(component, 0, injector);
-      Object.assign(this.instance.instance, transposeContext(this.scenario.context));
+
+      for (const ctx of this.scenario.context) {
+        this.instance.instance[ctx.name] = ctx.value;
+      }
+
+      if (this.scenario.outputs) {
+        for (const output of this.scenario.outputs) {
+          this.instance.instance.child[output.name]
+              .subscribe(o => {
+                console.log('Output Fired', o);
+                this.store.dispatch(new OutputEmitted(o));
+              });
+        }
+      }
     });
   }
 

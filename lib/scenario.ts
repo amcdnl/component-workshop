@@ -30,12 +30,7 @@ export interface ScenarioOptions {
   component: any;
   template: string;
   inputs?: {k: string, v: InputOptions};
-  outputs?: {k: string, v: OutputOptions };
   context?: any; // {k: string, v: ContextOptions|string|number|object|Function};
-}
-
-export interface OutputOptions {
-  description: string;
 }
 
 export interface InputOptions {
@@ -50,6 +45,10 @@ export interface ContextOptions {
   value: string|number|object|Function;
 }
 
+function dashCase(name: string) {
+  return name.toLowerCase().split(' ').join('-');
+}
+
 /**
  * Register the metadata globally
  */
@@ -60,28 +59,17 @@ export function registerMetadata(metas) {
 /**
  * Maps and tranposes values to the context object
  */
-export function transposeContext(context) {
-  const newContext = {};
-  /* tslint:disable */
-  if (context) {
-    for (const k in context) {
-      const v = context[k];
-      const isProp = v.hasOwnProperty('type') &&
-                     v.hasOwnProperty('value');
-
-      if (isProp) {
-        newContext[k] = v.value;
-      } else {
-        newContext[k] = context[k];
-      }
-    }
+function transposeContext(context) {
+  const isProp = context.hasOwnProperty('value');
+  if (isProp) {
+    return context.value;
+  } else {
+    return context;
   }
-  /* tslint:enable */
-  return newContext;
 }
 
 /**
- * Top level scenarios container.
+ * Top level scenarios group.
  *
  * Example:
  *    scenario('button', { ... })
@@ -102,7 +90,7 @@ export function scenario(name: string, options: ScenariosOptions): ScenariosResu
 
   const inst = {
     name,
-    route: name.toLowerCase().split(' ').join('-'),
+    route: dashCase(name),
     module,
     scenarios: [],
     add: (n: string, o: ScenarioOptions) => {
@@ -128,7 +116,7 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
     @ViewChild(options.component) child;
   }
   const component = Component({
-    selector: name.split(' ').join('-'),
+    selector: dashCase(name),
     template: options.template
   })(T);
 
@@ -146,9 +134,10 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
       return { ...options.inputs[k], name: k };
     }) : [];
 
-  const outputs = options.outputs ?
-    Object.keys(options.outputs).map(k => {
-      return { ...options.outputs[k], name: k };
+  const context = options.context ?
+    Object.keys(options.context).map(k => {
+      const prop = options.context[k];
+      return { name: k, description: prop.description, value: transposeContext(prop) };
     }) : [];
 
   const meta = metadata.find(m => m.component === options.component.name);
@@ -160,14 +149,24 @@ function addScenario(name: string, options: ScenarioOptions): ScenarioResults {
       });
     }
   }
+
+  const outputs = [];
+  if (meta && meta.outputs) {
+    for (const m in meta.outputs) {
+      outputs.push({
+        name: m,
+        ...meta.outputs[m]
+      });
+    }
+  }
   /* tslint:enable */
 
   return {
     name,
-    route: name.toLowerCase().split(' ').join('-'),
+    route: dashCase(name),
     component,
     inputs,
     outputs,
-    context: options.context
+    context
   };
 }

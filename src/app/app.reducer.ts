@@ -10,7 +10,18 @@ export function scenariosReducer(state = initalState, action: ScenarioActions) {
     case ScenarioActionTypes.UPDATE_COMPONENT:
       const inputs = {...state.inputs};
       Object.assign(inputs, action.payload);
-      state.inputs = inputs;
+      return {
+        ...state,
+        inputs
+      };
+    case ScenarioActionTypes.UPDATE_CONTEXT:
+      const context = {...state.context};
+      Object.assign(context, action.payload);
+      return {
+        ...state,
+        context
+      };
+    default:
       return state;
   }
 }

@@ -16,7 +16,7 @@ scenario('Button Variations', {
   /**
    * Add a scenario to this group of scenarios
    */
-  .add('Button', {
+  .add('Basic Button', {
     /**
      * Class of the component to get metadata lookup from
      */
@@ -29,15 +29,6 @@ scenario('Button Variations', {
       color: {
         default: 'white',
         control: 'colorpicker',
-        description: 'Override the default jsdoc'
-      }
-    },
-
-    /**
-     * Outputs would override defaults provided by TypeScript metadata
-     */
-    outputs: {
-      click: {
         description: 'Override the default jsdoc'
       }
     },
@@ -66,21 +57,7 @@ scenario('Button Variations', {
         {{text}}
       </button>
     `
-  })
-
-  /**
-   * Have the ability to extend a component that
-   * might be a slightly different variation of another
-   */
-  .extend('Raised Button', {
-    template: `
-      <button mat-raised-button 
-              [color]="primary" 
-              (click)="onClick()">
-        {{text}}
-      </button>
-    `
-  })
+  });
   ```
 
 #### Concept 2

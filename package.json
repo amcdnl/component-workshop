@@ -2,7 +2,7 @@
   "name": "component-workshop",
   "version": "1.0.0",
   "description": "Component Workshop: Develop Angular components in a sandbox environment",
-  "main": "index.js",
+  "main": "./scripts/cli.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -11,7 +11,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "parse": "node scripts/cli.js -d -c tests/**/*.ts",
-    "listen": "node scripts/server.js"
+    "listen": "node scripts/server.js",
+    "fstart": "node scripts/cli.js start"
+  },
+  "bin": {
+    "cw": "./bin/cw"
   },
   "repository": {
     "type": "git",
@@ -45,6 +49,7 @@
     "core-js": "^2.4.1",
     "glob": "^7.1.2",
     "rxjs": "^5.4.2",
+    "shelljs": "^0.7.8",
     "typescript": "^2.5.3",
     "zone.js": "^0.8.14"
   },
