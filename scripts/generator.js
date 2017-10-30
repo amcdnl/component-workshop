@@ -3,7 +3,7 @@ const glob = require('glob');
 const fs = require('fs');
 const path = require('path');
 
-function compile(components, scenarios, out, debug) {
+function generator(components, scenarios, out, debug) {
   console.log('🚀  Building scenarios...');
   
   // Get the input path
@@ -55,4 +55,4 @@ function compile(components, scenarios, out, debug) {
   console.log('✨  Build completed!');
 }
 
-module.exports = compile;
+module.exports = generator;
