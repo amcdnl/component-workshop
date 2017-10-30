@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 
-import { registerMetadata, scenarios } from '../../lib';
+  import { registerMetadata, scenarios } from '../../lib';
 
-declare var require: any;
+  declare var require: any;
 
-registerMetadata([
+  registerMetadata([
   {
     "component": "AlertComponent",
     "docs": "A fancy alert",
@@ -36,6 +36,6 @@ registerMetadata([
   }
 ]);
 
-require('../../scenarios/demo.ts');
+  require('../../scenarios/demo.ts');
 
-export { scenarios };
+  export { scenarios };
