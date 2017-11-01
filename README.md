@@ -62,26 +62,53 @@ scenario('Button Variations', {
 
 #### Concept 2
 ```javascript
-@Scenario({
-  group: 'button',
-  name: 'basic button',
-  imports: [ButtonModule]
-  component: ButtonComponent,
-  template: `
-    <button mat-button 
-            [color]="primary" 
-            (click)="onClick()">
-      {{text}}
-    </button>
-  `
+@Module({
+  imports: [MatButtonModule],
+  declarations: [BasicButtonComponent]
 }) 
-class BasicButton {
-  text = {
-    type: 'string',
-    control: 'textbox',
-    value: 'Hello'
-  };
-  primary = 'blue';
-  onClick() { console.log('here') }
+export class ButtonTestModule {}
+
+@Component({
+  template: `<button mat-button>{{text}}</button>`
+})
+export class BasicButtonComponent implements Scenario {
+  @ViewChild(MatButton) child;
+  text = 'Hi';
+}
+
+scenario('Button')
+  .add('Basic Button', {
+    component: BasicButtonComponent,
+    context: {
+      text: {
+        description: 'Text inside the button'
+      }
+    }
+  })
+```
+
+#### Concept 3
+```javascript
+@Module({
+  imports: [MatButtonModule],
+  declarations: [BasicButtonComponent]
+}) 
+export class ButtonTestModule {}
+
+@Scenario({
+  group: 'Button',
+  name: 'Baisc Button',
+  context: {
+    text: {
+      description: 'Text inside the button'
+    }
+  }
+})
+@Component({
+  template: `<button mat-button>{{text}}</button>`
+})
+export class BasicButtonComponent implements Scenario {
+  @ViewChild(MatButton) child;
+  text = 'Hi';
 }
 ```
