@@ -1,7 +1,7 @@
 const parseFiles = require('./parser');
 const glob = require('glob');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs-extra');
 
 function generator(components, scenarios, out, debug) {
   console.log('🚀  Building scenarios...');
@@ -31,21 +31,23 @@ function generator(components, scenarios, out, debug) {
   const requireTemplate = () => {
     const t = [];
     for (const p of scenarios) {
-      t.push(`require('${path.relative(path.resolve('src/assets'), p)}');\n`);
+      t.push(`require('${path.relative(path.resolve('./dist-cw'), p)}');\n`);
     }
     return t.join('');
   };
   
+  const outputPath = out || './dist-cw';
+  const libPath = path.relative(path.resolve(outputPath), './lib');
   const template = 
-  `import 'reflect-metadata';\n
-  import { registerMetadata, scenarios } from '../../lib';\n
-  declare var require: any;\n
-  registerMetadata(${JSON.stringify(metas, null, 2)});\n
-  ${requireTemplate()}
-  export { scenarios };\n`;
+`import 'reflect-metadata';\n
+import { registerMetadata, scenarios } from '${libPath}';\n
+declare var require: any;\n
+registerMetadata(${JSON.stringify(metas, null, 2)});\n
+${requireTemplate()}
+export { scenarios };\n`;
   
   // Write to the output
-  const outputPath = out || './src/assets';
+  fs.ensureDirSync(outputPath);
   fs.writeFileSync(`${outputPath}/scenarios.ts`, template);
   
   if (debug) {
