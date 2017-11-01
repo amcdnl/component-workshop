@@ -23,7 +23,7 @@ const appTemplate = {
 const template = `
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { WorkshopModule } from 'component-workshop';
-import './dist-cw/scenarios';
+import '../dist-cw/scenarios';
 platformBrowserDynamic().bootstrapModule(WorkshopModule);
 `;
 
